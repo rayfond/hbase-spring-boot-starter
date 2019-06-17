@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  net.bittx.hbase.spring.boot.starter.conf.HBaseAutoConfiguration
