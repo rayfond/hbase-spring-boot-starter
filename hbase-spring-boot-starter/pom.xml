@@ -17,5 +17,24 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>2nd-releases</id>
+            <name>internal Repository</name>
+            <url>http://192.168.0.23:8081/repository/2nd-releases/</url>
+        </repository>
+
+        <!--<repository>
+            <id>master-releases</id>
+            <name>internal Repository</name>
+            <url>http://192.168.0.23:8081/repository/master-releases/</url>
+        </repository>-->
+
+        <!--<snapshotRepository>
+            <id>2nd-snapshots</id>
+            <name>internal snapshot Repository</name>
+            <url>http://192.168.0.23:8081/repository/2nd-snapshots/</url>
+        </snapshotRepository>-->
+    </distributionManagement>
 
 </project>
