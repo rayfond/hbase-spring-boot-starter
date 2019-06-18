@@ -35,12 +35,9 @@ public class HBaseTemplate implements HBaseOperations {
     private volatile Connection connection;
 
     public HBaseTemplate(Configuration configuration) {
-        this.setConfiguration(configuration);
+        this.configuration = configuration;
         Assert.notNull(configuration, " a valid configuration is required");
     }
-
-
-
 
 
 
@@ -74,9 +71,9 @@ public class HBaseTemplate implements HBaseOperations {
             if(null != table){
                 try {
                     table.close();
-                    sw.start();
+                    sw.stop();
                 }catch (IOException e){
-                    LOGGER.error("hbase resource release failed.");
+                    LOGGER.error("HBase resource release failed.");
                 }
             }
         }
@@ -96,7 +93,7 @@ public class HBaseTemplate implements HBaseOperations {
         Scan scan = new Scan();
         scan.setCaching(5000);
         scan.addFamily(Bytes.toBytes(family));
-        return this.find(tableName,scan,mapper);
+        return find(tableName,scan,mapper);
     }
 
     /**
@@ -115,7 +112,7 @@ public class HBaseTemplate implements HBaseOperations {
         Scan scan = new Scan();
         scan.setCaching(5000);
         scan.addColumn(Bytes.toBytes(family),Bytes.toBytes(qualifier));
-        return this.find(tableName,scan,mapper);
+        return find(tableName,scan,mapper);
     }
 
     /**
@@ -130,7 +127,7 @@ public class HBaseTemplate implements HBaseOperations {
      */
     @Override
     public <T> List<T> find(String tableName, Scan scan, RowMapper<T> mapper) {
-        return this.execute(tableName, new TableCallback<List<T>>() {
+        return execute(tableName, new TableCallback<List<T>>() {
             @Override
             public List<T> doInTable(Table table) throws Throwable {
                 int caching = scan.getCaching();
@@ -165,7 +162,7 @@ public class HBaseTemplate implements HBaseOperations {
      */
     @Override
     public <T> T get(String tableName, String rowName, RowMapper<T> mapper) {
-        return this.get(tableName,rowName,null,null,mapper);
+        return get(tableName,rowName,null,null,mapper);
     }
 
     /**
@@ -179,7 +176,7 @@ public class HBaseTemplate implements HBaseOperations {
      */
     @Override
     public <T> T get(String tableName, String rowName, String familyName, RowMapper<T> mapper) {
-        return this.get(tableName,rowName,familyName,null,mapper);
+        return get(tableName,rowName,familyName,null,mapper);
     }
 
     /**
@@ -194,7 +191,7 @@ public class HBaseTemplate implements HBaseOperations {
      */
     @Override
     public <T> T get(String tableName, String rowName, String familyName, String qualifier, RowMapper<T> mapper) {
-        return this.execute(tableName, new TableCallback<T>() {
+        return execute(tableName, new TableCallback<T>() {
             @Override
             public T doInTable(Table table) throws Throwable {
                 Get get = new Get(Bytes.toBytes(rowName));
@@ -231,7 +228,7 @@ public class HBaseTemplate implements HBaseOperations {
 
         try {
             BufferedMutatorParams mutatorParams = new BufferedMutatorParams(TableName.valueOf(tableName));
-            mutator = this.getConnection().getBufferedMutator(mutatorParams);
+            mutator = getConnection().getBufferedMutator(mutatorParams);
             action.doInMutator(mutator);
         } catch (Throwable throwable) {
             sw.stop();
@@ -258,7 +255,7 @@ public class HBaseTemplate implements HBaseOperations {
     @Override
     public void saveOrUpdate(String tableName, Mutation mutation) {
 
-        this.execute(tableName, new MutatorCallback() {
+        execute(tableName, new MutatorCallback() {
             @Override
             public void doInMutator(BufferedMutator mutator) throws Throwable {
                 mutator.mutate(mutation);
@@ -273,8 +270,7 @@ public class HBaseTemplate implements HBaseOperations {
      */
     @Override
     public void saveOrUpdates(String tableName, List<Mutation> mutations) {
-
-        this.execute(tableName, new MutatorCallback() {
+        execute(tableName, new MutatorCallback() {
             @Override
             public void doInMutator(BufferedMutator mutator) throws Throwable {
                 mutator.mutate(mutations);
@@ -291,17 +287,19 @@ public class HBaseTemplate implements HBaseOperations {
             synchronized (this) {
                 if (null == this.connection) {
                     try {
-                        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(200, Integer.MAX_VALUE,
+                        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(2, Integer.MAX_VALUE,
                                 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
                         // init pool
                         poolExecutor.prestartCoreThread();
                         this.connection = ConnectionFactory.createConnection(configuration, poolExecutor);
+                        //this.connection = ConnectionFactory.createConnection(configuration);
                     } catch (IOException e) {
                         LOGGER.error("Create hbase connection error: thread pool create failed.");
                     }
                 }
             }
         }
+        System.out.println(Thread.currentThread().getId());
         return this.connection;
     }
 

@@ -1,6 +1,10 @@
 {
   "hints":[{
-    "name":"data.hbase.quorum"
+    "name":"data.hbase.quorum",
+    "values":[{
+      "value":"localhost:2181",
+      "description":"standalone example."
+    }]
   }],
   "groups":[
     {
