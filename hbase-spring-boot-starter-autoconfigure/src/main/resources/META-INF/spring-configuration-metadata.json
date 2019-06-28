@@ -13,7 +13,7 @@
       "sourceType": "net.bittx.hbase.spring.boot.starter.conf.HBaseProperties",
       "name": "data.hbase.quorum",
       "type": "java.lang.String",
-      "description": "hbase zookeeper endpoint",
+      "description": "hbase zookeeper quorum",
       "defaultValue": "localhost:2181"
     },{
       "sourceType": "net.bittx.hbase.spring.boot.starter.conf.HBaseProperties",
