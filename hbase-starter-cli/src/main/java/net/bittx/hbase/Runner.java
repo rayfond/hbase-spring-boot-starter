@@ -17,5 +17,7 @@ public class Runner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         System.out.println(">>>>>>>>>>>>>>>>...");
         System.out.println(starterService.get());
+        starterService.save();
+
     }
 }
