@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class HBaseDemo {
 
-    private static final String TABLE_NAME = "xtable";
+    private static final String TABLE_NAME = "x1table";
     private static final String CF_DEFAULT = "cf";
     public static final byte[] QUALIFIER = "col1".getBytes();
     private static final byte[] ROWKEY = "rowkey1".getBytes();
