@@ -1,6 +1,10 @@
 {
   "hints":[{
-    "name":"data.hbase.quorum"
+    "name":"data.hbase.quorum",
+    "values":[{
+      "value":"localhost:2181",
+      "description":"standalone example."
+    }]
   }],
   "groups":[
     {
@@ -13,7 +17,7 @@
       "sourceType": "net.bittx.hbase.spring.boot.starter.conf.HBaseProperties",
       "name": "data.hbase.quorum",
       "type": "java.lang.String",
-      "description": "hbase zookeeper quorum",
+      "description": "hbase zookeeper endpoint",
       "defaultValue": "localhost:2181"
     },{
       "sourceType": "net.bittx.hbase.spring.boot.starter.conf.HBaseProperties",

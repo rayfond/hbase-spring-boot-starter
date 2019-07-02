@@ -2,7 +2,7 @@ package net.bittx.hbase.spring.boot.starter.conf;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("prefix=data.hbase")
+@ConfigurationProperties(prefix="data.hbase")
 public class HBaseProperties {
 
     private String quorum;
