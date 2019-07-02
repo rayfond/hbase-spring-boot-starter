@@ -130,10 +130,11 @@ public class HBaseTemplate implements HBaseOperations {
         return execute(tableName, new TableCallback<List<T>>() {
             @Override
             public List<T> doInTable(Table table) throws Throwable {
+                // 一次读取回来的Results数量为100
                 int caching = scan.getCaching();
                 // if caching is default value (1), reset it to 5000
-                if(caching == 1){
-                    scan.setCaching(5000);
+                if(caching == -1){
+                    scan.setCaching(500);
                 }
 
                 ResultScanner scanner = table.getScanner(scan);
